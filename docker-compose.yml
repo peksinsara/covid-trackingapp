@@ -1,20 +1,25 @@
-version: '3'
-
+  
+version: "3.5"
 services:
-  db:
-    image: postgres
-    ports: 
-      - "5432"
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-  web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/code
+  postgres:
+    image: postgres:9.5
+    container_name: covid_tracking_postgres
+    image: postgis/postgis
     ports:
-      - "8000:8000"
-    depends_on:
-      - db
+      - "5432:5432"
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    networks:
+      - postgres
+    volumes:
+      - ./postgres_data:/data/postgres
+
+volumes:
+  postgres_data:
+
+networks:
+  postgres:
+    driver: bridge

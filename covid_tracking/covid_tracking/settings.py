@@ -56,7 +56,9 @@ ROOT_URLCONF = 'covid_tracking.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            'covid_tracking/templates'
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

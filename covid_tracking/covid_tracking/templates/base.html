@@ -29,28 +29,12 @@
   </head>
 
   <body class="{% block body_class %}{% endblock %}">
-    <div class="d-flex h-100 flex-column">
-      <nav class="navbar navbar-expand-md navbar-light">
-        <span class="navbar-brand">
-          🤒 {% trans "Coronavirus symptoms" %}
-        </span>
-        <div class="ml-auto">
-          <button
-            type="button"
-            id="add-report"
-            class="btn btn-info"
-            data-toggle="modal"
-            data-target="#reportModal"
-          >
-            😷 {% trans "Add report" %}
-          </button>
-        </div>
-      </nav>
+    {% include "nav.html" %}
 
-      <div class="container-fluid d-flex h-100 p-0 m-0">
-        {% block content %}{% endblock %}
-      </div>
+    <div class="container-fluid mt-3">
+        {% block content%} {% endblock %}
     </div>
+
 
     {# Global javascript #}
     <script
@@ -65,7 +49,6 @@
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/build/ol.js"></script>
-    {% block extra_js %} {# Override this in templates to add extra javascript
-    #} {% endblock extra_js %}
+
   </body>
 </html>

@@ -8,3 +8,8 @@ class Report(models.Model):
 
     first_symptomatic = models.DateField(default=datetime.now)
     location = PointField(null=True, blank=True)
+    
+    @property
+    def lat_lang(self):
+        return list(getattr(self.location, "coords", []))[::-1]
+   

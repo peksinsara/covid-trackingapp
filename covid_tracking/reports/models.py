@@ -12,4 +12,6 @@ class Report(models.Model):
     @property
     def lat_lang(self):
         return list(getattr(self.location, "coords", []))[::-1]
-   
+    
+    def __str__ (self):
+       return str(self.first_symptomatic)

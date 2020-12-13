@@ -18,13 +18,18 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
     />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
+    
     <style type="text/css">
       html,
       body {
         height: 100%;
       }
     </style>
+    {% block additional_css %}
+
+    {% endblock additional_css %}
 
   </head>
 
@@ -32,7 +37,8 @@
     {% include "nav.html" %}
 
     <div class="container-fluid mt-3">
-        {% block content%} {% endblock %}
+        {% block content %} 
+        {% endblock content %}
     </div>
 
 
@@ -47,8 +53,13 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
       crossorigin="anonymous"
     ></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/build/ol.js"></script>
 
+
+    {% block additional_js %}
+
+    {% endblock additional_js %}
   </body>
 </html>

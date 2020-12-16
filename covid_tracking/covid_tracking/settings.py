@@ -97,7 +97,6 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost', # set in docker-compose.yml
-
     }
 }
 

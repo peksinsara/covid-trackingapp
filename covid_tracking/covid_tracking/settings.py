@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.gis',
@@ -38,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_gis',
+    'django_filters',
     'reports',
 ]
 
@@ -58,7 +63,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             'covid_tracking/templates'
-            ],
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,8 +79,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'covid_tracking.wsgi.application'
 
 
-#connecting path
-import os
+# connecting path
 if os.name == 'nt':
     import platform
     OSGEO4W = r"C:\OSGeo4W"
@@ -86,9 +90,7 @@ if os.name == 'nt':
     os.environ['GDAL_DATA'] = OSGEO4W + r"\share\gdal"
     os.environ['PROJ_LIB'] = OSGEO4W + r"\share\proj"
     os.environ['PATH'] = OSGEO4W + r"\bin;" + os.environ['PATH']
-   
-   
-    
+
 
 DATABASES = {
     'default': {
@@ -96,7 +98,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'localhost', # set in docker-compose.yml
+        'HOST': 'localhost',  # set in docker-compose.yml
     }
 }
 

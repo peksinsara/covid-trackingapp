@@ -17,9 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from reports.views import ReportListView
+from django.urls import include
 
+import reports.urls as reports_urls
 urlpatterns = [
     path('admin/', admin.site.urls),
+    include('reports/', include('reports.urls')),
     path('', ReportListView.as_view())
 ]
 

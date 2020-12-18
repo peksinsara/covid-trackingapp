@@ -1,26 +1,54 @@
-{% extends "base.html" %} {% block content%}
-<div id="map"></div>
+{% extends "base.html" %}
+{% block content%}
+<div id="map">
+  <div class="leaflet-top leaflet-right mt-3 mr-3">
+    <input data-target="#reportModal" data-toggle="modal" type="button" id="add-report" value="New Report" onclick="" class="btn btn-success">
+  </div>
+</div>
 
-{% endblock content%} {% block additional_js %}
+<!-- Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong class="modal-title" id="reportModalLabel">Submit report</strong>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+      </div>
+      <div class="modal-body">
+        <p>Form goes here</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content%}
+{% block additional_js %}
 <script>
+  var map = L.map("map").setView([43.85643, 18.413029], 14);
+  var mapLink = ' <a href="https://www.openstreetmap.org">Open Map</a>';
 
-      /* mapping out map with Sarajevo coordinates */
-    var map = L.map("map").setView([43.856430,18.413029] ,14);
-    var mapLink =' <a href="https://www.openstreetmap.org">Open Map</a>' ;
+  L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "Map data &copy;" + mapLink,
+    maxZoon: 18,
+  }).addTo(map);
 
-
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: 'Map data &copy;'  + mapLink,
-      maxZoon: 18,
-    }).addTo(map);
-
-    /* input */
-    
+  jQuery.ajax("/reports/reports_json/", {
+    success: function (reports) {
+      reports.features.forEach(function (report) {
+        L.marker(report.geometry.coordinates).addTo(map);
+      });
+    },
+  });
 </script>
-
-{% endblock additional_js %} 
-
-{% block additional_css %}
+{% endblock additional_js %} {% block additional_css %}
 <style>
   body {
     padding: 0;
@@ -32,9 +60,13 @@
     width: 100%;
   }
   #map {
-    height: 80%;
     width: 80%;
+    height: 90%;
     margin: auto;
   }
+  .btn{
+    pointer-events:auto;
+  }
+
 </style>
 {% endblock additional_css %}

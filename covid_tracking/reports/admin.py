@@ -7,6 +7,6 @@ from .models import Report
 
 @admin.register(Report)
 class ReportAdmin (OSMGeoAdmin):
-    default_lon = 0
-    default_lat = 0
-    default_zoom = 1
+    default_lat =  43.818567
+    default_lon = 18.327333
+    default_zoom = 5

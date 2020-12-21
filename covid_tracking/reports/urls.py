@@ -1,5 +1,5 @@
 from rest_framework.routers import DefaultRouter
-from .views import ReportViewSet
+from .api import ReportViewSet
 from rest_framework import routers
 
 

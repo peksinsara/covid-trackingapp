@@ -117,6 +117,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+REST_FRAMEWORK={
+    'DEFAULT_AUTHENTICATION_CLASSES':[],
+    'DEFAULT:PREMISSION_CLASSES':[],
+}
 
 
 # Internationalization

@@ -22,28 +22,25 @@
 
       <div class="modal-body">
         <form>
-          <div class="form-group">
+          <div id="reportForm">
             <label for="id_first_symptomatic">First symptomatic:</label>
             <input type="text" name="first_symptomatic" class="form-control" required="required"
               id="id_first_symptomatic">
           </div>
           <div class="form-group">
-            <button type="button" onClick="locateMe()" class="btn btn-info">Locate:</button>
             <label for="id_location_map">Location:</label>
-            <input type="hidden" class="form-control" id="id_location" name="location"></input>
-            <p class="form-text text-muted" id="status">Test</p>
-            <a id = "map-link" target="_blank"></a>
+            <div id="id_location_map" style="width:100%"></div>
+            <p id="location_map_validation_message" class="bg-danger text-white mt-2 p-2" style="display:none;">Choose a
+              location</p>
           </div>
-          <div id="id_location_map" style="width:100%"></div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Submit report</button>
+
         </form>
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Close
-        </button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
     </div>
   </div>
 </div>
@@ -62,21 +59,72 @@
   jQuery.ajax("/reports/reports_json/", {
     success: function (reports) {
       reports.features.forEach(function (report) {
-        L.marker(report.geometry.coordinates).addTo(map);
+        var lat = report.geometry.coordinates[0];
+        var lang = report.geomery.coordinates[1];
+        L.marker([lat, lng]).addTo(map);
       });
     },
   });
 
-  var locationMap= L.map('id_location_map').setView([43.85643, 18.413029], 14);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  var firstSymptomaticField = flatpickr("#id_first_symptomatic", {
+    defaultDate: 'today',
+  });
+
+  var locationMap = L.map('id_location_map').setView([43.85643, 18.413029], 14);
+
+  $('#reportModal').on('shown.bs.modal', function () { locationMap.invalidateSize(); });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(locationMap);
+  }).addTo(locationMap);
 
-flatpickr("#id_first_symptomatic",{});
+  var userLocationMarker = L.marker();
+
+  locationMap.on('click', function (event) {
+    var lat = event.latlng.lat;
+    var lng = event.latlng.lng;
 
 
-$('#reportModal').on('shown.bs.modal', function(){ locationMap.invalidateHeight(); })
+    var lat_fixed = (lat).toFixed(4);
+    var lng_fixed = (lng).toFixed(4);
+
+    userLocationMarker.setlatlng([lat_fixed, lng_fixed]).addTo(locationMap);
+
+  });
+
+  $('#reportFOrm').submit(function (event) {
+    event.preventDefault();
+
+    if (!userLocationMarker.getLatlng()) {
+      $("#location_map_validation_message").show();
+    } else {
+      $("#location_map_validation_message").hide();
+
+      var location = userLocationMarker.toGeoJSON()
+      var firstSymptomatic = firstSymptomaticField.selectedDates[0];
+      var reportData = {
+        first_symptomatic: moment(firstSymptomatic).format('YYYY-MM-DD'),
+        location: location.geometry
+      };
+
+      jQuery.ajax({
+        url: "/reports/reports_json/",
+        type: "POST",
+        data: JSON.stringify(reportData),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function () {
+          window.location.reload();
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      });
+    }
+  });
+
+/*
   function locateMe() {
     const status = document.querySelector('#status');
     const mapLink = document.querySelector('#map-link');
@@ -88,8 +136,8 @@ $('#reportModal').on('shown.bs.modal', function(){ locationMap.invalidateHeight(
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
 
-      latitude_truncated=(latitude).toFixed(4);
-      latitude_truncated=(longitude).toFixed(4);
+      latitude_truncated = (latitude).toFixed(4);
+      latitude_truncated = (longitude).toFixed(4);
 
       status.textContent = '';
       mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude_truncated}/${latitude_truncated}`;
@@ -108,7 +156,7 @@ $('#reportModal').on('shown.bs.modal', function(){ locationMap.invalidateHeight(
     }
 
   }
-
+*/
 </script>
 {% endblock additional_js %} {% block additional_css %}
 <style>
@@ -132,8 +180,9 @@ $('#reportModal').on('shown.bs.modal', function(){ locationMap.invalidateHeight(
   .btn {
     pointer-events: auto;
   }
-  #id_location_map{
-    height:300px;
+
+  #id_location_map {
+    height: 300px;
   }
 </style>
 {% endblock additional_css %}

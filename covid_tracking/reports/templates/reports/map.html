@@ -28,9 +28,13 @@
               id="id_first_symptomatic">
           </div>
           <div class="form-group">
-            <label for="id_location">Location:</label>
-            <input type="text" class="form-control" id="id_location" name="location"></input>
+            <button type="button" onClick="locateMe()" class="btn btn-info">Locate:</button>
+            <label for="id_location_map">Location:</label>
+            <input type="hidden" class="form-control" id="id_location" name="location"></input>
+            <p class="form-text text-muted" id="status">Test</p>
+            <a id = "map-link" target="_blank"></a>
           </div>
+          <div id="id_location_map" style="width:100%"></div>
         </form>
       </div>
 
@@ -61,6 +65,47 @@
       });
     },
   });
+
+  var locationMap= L.map('id_location_map').setView([43.85643, 18.413029], 14);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(locationMap);
+
+
+$('#reportModal').on('shown.bs.modal', function(){ locationMap.invalidateHeight(); })
+  function locateMe() {
+    const status = document.querySelector('#status');
+    const mapLink = document.querySelector('#map-link');
+
+    mapLink.href = '';
+    mapLink.textContent = '';
+
+    function success(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      latitude_truncated=(latitude).toFixed(4);
+      latitude_truncated=(longitude).toFixed(4);
+
+      status.textContent = '';
+      mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude_truncated}/${latitude_truncated}`;
+      mapLink.textContent = `Latitude: ${latitude_truncated} °, Longitude: ${latitude_truncated} °`;
+    }
+
+    function error() {
+      status.textContent = 'Unable to retrieve your location';
+    }
+
+    if (!navigator.geolocation) {
+      status.textContent = 'Geolocation is not supported by your browser';
+    } else {
+      status.textContent = 'Locating…';
+      navigator.geolocation.getCurrentPosition(success, error);
+    }
+
+  }
+
 </script>
 {% endblock additional_js %} {% block additional_css %}
 <style>
@@ -83,6 +128,9 @@
 
   .btn {
     pointer-events: auto;
+  }
+  #id_location_map{
+    height:300px;
   }
 </style>
 {% endblock additional_css %}

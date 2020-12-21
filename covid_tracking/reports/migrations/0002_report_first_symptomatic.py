@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='Report',
-            name='first_symptomatic',
+            name='the_first_symptomatic',
             field=models.DateField(default=datetime.datetime.now),
         ),
     ]

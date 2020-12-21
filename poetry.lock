@@ -118,12 +118,12 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "package"
-version = "0.1.1"
-description = "package is a package to package your package"
+name = "ol"
+version = "0.0.1"
+description = "Develop soon"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.3.0"
 
 [[package]]
 name = "pathspec"
@@ -200,7 +200,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "096c25190ebffb7ee2fcaa3d28e3e65453cb6a838914762a7b4afffa67a4e886"
+content-hash = "6d800b9480d70c7c8907d8b97fdb05a2f275c57e0a53e162d4b3e6065506f2d1"
 
 [metadata.files]
 appdirs = [
@@ -240,8 +240,8 @@ mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
 ]
-package = [
-    {file = "package-0.1.1.tar.gz", hash = "sha256:01eee19a56a936bd63222f0a3c531fcdba37b5ad1bd833b960d62fb960b4955e"},
+ol = [
+    {file = "ol-0.0.1-py3-none-any.whl", hash = "sha256:c98e4425b48ed804be929b5dfdcdd1a32dd184296bbf16486d0624336a705fdf"},
 ]
 pathspec = [
     {file = "pathspec-0.8.1-py2.py3-none-any.whl", hash = "sha256:aa0cb481c4041bf52ffa7b0d8fa6cd3e88a2ca4879c533c9153882ee2556790d"},
